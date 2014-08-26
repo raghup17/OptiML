@@ -712,13 +712,15 @@ trait DenseMatrixOpsImpl {
 //  }
 
   def unroll(unrollFactor: scala.Int)(loopStart: Rep[Int], loopEnd: Rep[Int])(body: Rep[Int] => scala.Unit) = {
-    println("Loop begins here, loopStart = " + loopStart + "loopEnd = " + loopEnd + " {")
+//    println("Loop begins here, loopStart = " + loopStart + "loopEnd = " + loopEnd + " {")
 //    println("The unroll part")
     for (iter <- loopStart until loopEnd by unrollFactor) {
-      for (u: Int <- 0 to unrollFactor-1) {
-        val arg = iter + u
-        println("iter = " + iter + ", u = " + u + ", arg = " + arg)
-        body(arg) 
+      if ((iter+unrollFactor-1) < loopEnd) {
+        for (u: Int <- 0 to unrollFactor-1) {
+          val arg = iter + u
+//          println("iter = " + iter + ", u = " + u + ", arg = " + arg)
+          body(arg) 
+        }
       }
     }
 
@@ -731,7 +733,7 @@ trait DenseMatrixOpsImpl {
         body(i)
       }
     }
-    println("Loop ends here loopStart = " + loopStart + "loopEnd = " + loopEnd + " {")
+//    println("Loop ends here loopStart = " + loopStart + "loopEnd = " + loopEnd + " {")
 
   }
 
@@ -810,9 +812,12 @@ trait DenseMatrixOpsImpl {
       for (rowIdx <- 0 until self.numRows) {
         for (i <- 0 until __arg1.numCols) {
           var acc = self(rowIdx, 0) * yT(i, 0)
-          unroll(1) (1, yT.numCols) { j => {
+//          println("(" + rowIdx + ", " + i + ")")
+          unroll(2) (1, yT.numCols) { j => {
             acc += self(rowIdx, j) * yT(i, j)
+//            println("self(rowIdx,j) = " + self(rowIdx,j) + ", yT(i,j) = " + yT(i,j))
           }} // j
+
 
           out(rowIdx, i) = acc
         } // i
