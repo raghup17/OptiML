@@ -1,0 +1,80 @@
+{"DEG":{
+"version" : 0.1,
+"name" : "",
+"kernelpath" : "/usr/local/google/home/raghuprabhakar/work/stanford/hyperdsl/published/OptiML/generated/",
+"targets": ["scala"],
+"ops": [
+{"type" : "Arguments", "kernelId" : "x0", "index" : "0",
+  "return-types":{"scala" : "Array[java.lang.String]"}
+},
+{"type":"SingleTask",  "sourceContext": {
+    "fileName": "/usr/local/google/home/raghuprabhakar/work/stanford/hyperdsl/published/OptiML/apps/src/Forloop.scala",
+    "opName": "println",
+    "line": "10" } , "kernelId" : "x7"  , "supportedTargets": ["scala"],
+  "outputs":["x7"],
+  "inputs":[],
+  "mutableInputs":[],
+  "controlDeps":[],
+  "antiDeps":[],
+  "metadata":{},
+  "return-types":{"scala" : "Unit"},
+  "output-types":{"x7":{"scala" : "Unit"}}
+},
+{"type":"SingleTask",  "sourceContext": {
+    "fileName": "/usr/local/google/home/raghuprabhakar/work/stanford/hyperdsl/published/OptiML/apps/src/Forloop.scala",
+    "opName": "println",
+    "line": "10" } , "kernelId" : "x8"  , "supportedTargets": ["scala"],
+  "outputs":["x8"],
+  "inputs":[],
+  "mutableInputs":[],
+  "controlDeps":["x7"],
+  "antiDeps":[],
+  "metadata":{},
+  "return-types":{"scala" : "Unit"},
+  "output-types":{"x8":{"scala" : "Unit"}}
+},
+{"type":"SingleTask",  "sourceContext": {
+    "fileName": "/usr/local/google/home/raghuprabhakar/work/stanford/hyperdsl/published/OptiML/apps/src/Forloop.scala",
+    "opName": "println",
+    "line": "10" } , "kernelId" : "x9"  , "supportedTargets": ["scala"],
+  "outputs":["x9"],
+  "inputs":[],
+  "mutableInputs":[],
+  "controlDeps":["x7","x8"],
+  "antiDeps":[],
+  "metadata":{},
+  "return-types":{"scala" : "Unit"},
+  "output-types":{"x9":{"scala" : "Unit"}}
+},
+{"type":"SingleTask",  "sourceContext": {
+    "fileName": "/usr/local/google/home/raghuprabhakar/work/stanford/hyperdsl/published/OptiML/apps/src/Forloop.scala",
+    "opName": "println",
+    "line": "10" } , "kernelId" : "x10"  , "supportedTargets": ["scala"],
+  "outputs":["x10"],
+  "inputs":[],
+  "mutableInputs":[],
+  "controlDeps":["x7","x8","x9"],
+  "antiDeps":[],
+  "metadata":{},
+  "return-types":{"scala" : "Unit"},
+  "output-types":{"x10":{"scala" : "Unit"}}
+},
+{"type":"SingleTask",  "sourceContext": {
+    "fileName": "/usr/local/google/home/raghuprabhakar/work/stanford/hyperdsl/published/OptiML/apps/src/Forloop.scala",
+    "opName": "println",
+    "line": "10" } , "kernelId" : "x11"  , "supportedTargets": ["scala"],
+  "outputs":["x11"],
+  "inputs":[],
+  "mutableInputs":[],
+  "controlDeps":["x7","x8","x9","x10"],
+  "antiDeps":[],
+  "metadata":{},
+  "return-types":{"scala" : "Unit"},
+  "output-types":{"x11":{"scala" : "Unit"}}
+},
+{"type":"EOP",
+  "return-types":{"scala" : "Unit"},
+  "Type": "const",
+  "Value": "()"
+}
+]}}

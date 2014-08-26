@@ -1,0 +1,3 @@
+[0m[[0minfo[0m] [0mGrabbing all dependency source jars. This may take a while if you don't have them in your Ivy cache[0m
+[0m[[0minfo[0m] [0mClearing /usr/local/google/home/raghuprabhakar/work/stanford/hyperdsl/published/OptiML/target/sbt-ctags-dep-srcs[0m
+[0m[[0minfo[0m] [0mUnzipping dependency source jars into /usr/local/google/home/raghuprabhakar/work/stanford/hyperdsl/published/OptiML/target/sbt-ctags-dep-srcs[0m

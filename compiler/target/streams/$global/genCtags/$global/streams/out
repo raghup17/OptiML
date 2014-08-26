@@ -1,0 +1,6 @@
+[0m[[0minfo[0m] [0mGrabbing all dependency source jars. This may take a while if you don't have them in your Ivy cache[0m
+[0m[[0minfo[0m] [0mClearing /usr/local/google/home/raghuprabhakar/work/stanford/hyperdsl/published/OptiML/compiler/target/sbt-ctags-dep-srcs[0m
+[0m[[0minfo[0m] [0mUnzipping dependency source jars into /usr/local/google/home/raghuprabhakar/work/stanford/hyperdsl/published/OptiML/compiler/target/sbt-ctags-dep-srcs[0m
+[0m[[0mdebug[0m] [0mexisting ctags src dirs: List(/usr/local/google/home/raghuprabhakar/work/stanford/hyperdsl/published/OptiML/compiler/src, /usr/local/google/home/raghuprabhakar/work/stanford/hyperdsl/published/OptiML/compiler/target/sbt-ctags-dep-srcs)[0m
+[0m[[0minfo[0m] [0mGenerating tag file[0m
+[0m[[0minfo[0m] [0mrunning this command to generate ctags: ctags --exclude=log --languages=scala -f .tags  -R /usr/local/google/home/raghuprabhakar/work/stanford/hyperdsl/published/OptiML/compiler/src /usr/local/google/home/raghuprabhakar/work/stanford/hyperdsl/published/OptiML/compiler/target/sbt-ctags-dep-srcs[0m
