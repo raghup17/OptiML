@@ -714,25 +714,26 @@ trait DenseMatrixOpsImpl {
   def unroll(unrollFactor: scala.Int)(loopStart: Rep[Int], loopEnd: Rep[Int])(body: Rep[Int] => scala.Unit) = {
 //    println("Loop begins here, loopStart = " + loopStart + "loopEnd = " + loopEnd + " {")
 //    println("The unroll part")
-    for (iter <- loopStart until loopEnd by unrollFactor) {
-      if ((iter+unrollFactor-1) < loopEnd) {
+    val iterCount = (loopEnd-loopStart)
+    val residueCount: Rep[Int] = iterCount % unrollFactor
+    val residueStart: Rep[Int] = loopEnd - residueCount
+
+    for (iter <- loopStart until residueStart by unrollFactor) {
+//      if ((iter+unrollFactor-1) < loopEnd) {
         for (u: Int <- 0 to unrollFactor-1) {
           val arg = iter + u
 //          println("iter = " + iter + ", u = " + u + ", arg = " + arg)
           body(arg) 
         }
-      }
+//      }
     }
 
 //    println("The residue part")
-    val iterCount = (loopEnd-loopStart)
-    val residueCount: Rep[Int] = iterCount % unrollFactor
-    val residueStart: Rep[Int] = loopEnd - residueCount
-    if (residueCount > 0) {
-      for (i <- residueStart until loopEnd)  {
-        body(i)
-      }
+//    if (residueCount > 0) {
+    for (i <- residueStart until loopEnd)  {
+      body(i)
     }
+//    }
 //    println("Loop ends here loopStart = " + loopStart + "loopEnd = " + loopEnd + " {")
 
   }
@@ -810,17 +811,18 @@ trait DenseMatrixOpsImpl {
 
       val yT = __arg1.t
       for (rowIdx <- 0 until self.numRows) {
-        for (i <- 0 until __arg1.numCols) {
+
+        unroll(2) (0, __arg1.numCols) { i => {
           var acc = self(rowIdx, 0) * yT(i, 0)
 //          println("(" + rowIdx + ", " + i + ")")
           unroll(2) (1, yT.numCols) { j => {
             acc += self(rowIdx, j) * yT(i, j)
-//            println("self(rowIdx,j) = " + self(rowIdx,j) + ", yT(i,j) = " + yT(i,j))
+    //      println("self(rowIdx,j) = " + self(rowIdx,j) + ", yT(i,j) = " + yT(i,j))
           }} // j
 
 
           out(rowIdx, i) = acc
-        } // i
+        }} // i
       } // rowIdx
       
     }
