@@ -711,31 +711,22 @@ trait DenseMatrixOpsImpl {
 //    println("Best tunables order" + sortedTupleList)
 //  }
 
-  def unroll(unrollFactor: scala.Int)(loopStart: Rep[Int], loopEnd: Rep[Int])(body: Rep[Int] => scala.Unit) = {
-//    println("Loop begins here, loopStart = " + loopStart + "loopEnd = " + loopEnd + " {")
-//    println("The unroll part")
+  def unroll(unrollFactor: scala.Int)(loopStart: Rep[Int], loopEnd: Rep[Int], step: Int)(body: Rep[Int] => scala.Unit) = {
     val iterCount = (loopEnd-loopStart)
     val residueCount: Rep[Int] = iterCount % unrollFactor
     val residueStart: Rep[Int] = loopEnd - residueCount
-
-    for (iter <- loopStart until residueStart by unrollFactor) {
-//      if ((iter+unrollFactor-1) < loopEnd) {
+    val superStep: Rep[Int] = unrollFactor * step
+    for (iter <- loopStart until residueStart by superStep) {
         for (u: Int <- 0 to unrollFactor-1) {
-          val arg = iter + u
-//          println("iter = " + iter + ", u = " + u + ", arg = " + arg)
-          body(arg) 
+          val arg = iter + u*step
+          body(arg)
         }
-//      }
     }
 
-//    println("The residue part")
-//    if (residueCount > 0) {
-    for (i <- residueStart until loopEnd)  {
+    for (i <- residueStart until loopEnd by step)  {
+      println("residue")
       body(i)
     }
-//    }
-//    println("Loop ends here loopStart = " + loopStart + "loopEnd = " + loopEnd + " {")
-
   }
 
 
@@ -807,24 +798,48 @@ trait DenseMatrixOpsImpl {
       *  func
       */
 
-      val unrollCount = 2  // Assumption is that the loop has greater iterations than unroll count
+//      val unrollCount = 2  // Assumption is that the loop has greater iterations than unroll count
 
-      val yT = __arg1.t
-      for (rowIdx <- 0 until self.numRows) {
+//      val yT = __arg1.t
+//      unroll(2) (0, self.numRows, 1) { rowIdx => {
+//
+//        unroll(2) (0, __arg1.numCols, 1) { i => {
+//
+//          var acc = self(rowIdx, 0) * yT(i, 0)
+//          unroll(2) (1, yT.numCols, 1) { j => {
+//            acc += self(rowIdx, j) * yT(i, j)
+//          }} // j
+//
+//
+//          out(rowIdx, i) = acc
+//        }} // i
+//      }} // rowIdx
+   
+      val M = self.numRows
+      val P = self.numCols
+      val N = __arg1.numCols
+      val m = 4
+      val p = 4
+      val n = 4
 
-        unroll(2) (0, __arg1.numCols) { i => {
-          var acc = self(rowIdx, 0) * yT(i, 0)
-//          println("(" + rowIdx + ", " + i + ")")
-          unroll(2) (1, yT.numCols) { j => {
-            acc += self(rowIdx, j) * yT(i, j)
-    //      println("self(rowIdx,j) = " + self(rowIdx,j) + ", yT(i,j) = " + yT(i,j))
-          }} // j
 
+      unroll(2) (0, M, m) { blockm => {
+        unroll(2) (0, N, n) { blockn => { 
+          unroll(2) (0, P, p) { blockp => {
+          
+            unroll(2) (blockm, blockm+m, 1) { rowIdx => {
+              unroll(2) (blockn ,blockn+n, 1) { colIdx => {
+                var acc = out(rowIdx, colIdx)
+                unroll(2) (blockp, blockp + p, 1) { tempIter => {
+                  acc += self(rowIdx, tempIter) * __arg1(tempIter, colIdx)
+                }}
+                out(rowIdx, colIdx) = acc
+              }}
+            }}
+          }}
+        }}
+      }}
 
-          out(rowIdx, i) = acc
-        }} // i
-      } // rowIdx
-      
     }
     else {
       val yT = __arg1.t
