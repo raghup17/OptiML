@@ -272,32 +272,43 @@ trait CGenMiscOps extends CGenFat {
   val IR: MiscOpsExp
   import IR._
 
-  override def emitNode(sym: Sym[Any], rhs: Def[Any]) = rhs match {
-    case mn@Misc_Exit(__arg0) => 
-      stream.print("exit("+quote(__arg0)+")")
-      stream.println(";")
+  override def emitNode(sym: Sym[Any], rhs: Def[Any]) = {
+      rhs match {
+      case mn@Misc_Exit(__arg0) => 
+        Console.println("CGenMiscOps::emitNode::Misc_Exit")
+        stream.print("exit("+quote(__arg0)+")")
+        stream.println(";")
 
-    case mn@Misc_Print(__arg0) => 
-      stream.print("std::cout << "+quote(__arg0)+"")
-      stream.println(";")
+      case mn@Misc_Print(__arg0) => 
+        Console.println("CGenMiscOps::emitNode::Misc_Print")
+        stream.print("std::cout << "+quote(__arg0)+"")
+        stream.println(";")
 
-    case mn@Misc_Fatal(__arg0) => 
-      stream.print("assert(0)")
-      stream.println(";")
+      case mn@Misc_Fatal(__arg0) => 
+        Console.println("CGenMiscOps::emitNode::Misc_Fatal")
+        stream.print("assert(0)")
+        stream.println(";")
 
-    case mn@Misc1_Println(__arg0) => 
-      stream.print("std::cout << "+quote(__arg0)+" << std::endl")
-      stream.println(";")
+      case mn@Misc1_Println(__arg0) => 
+        Console.println("CGenMiscOps::emitNode::Misc1_Println")
+        stream.print("assert(0)")
+        stream.print("std::cout << "+quote(__arg0)+" << std::endl")
+        stream.println(";")
 
-    case mn@Misc2_Println() => 
-      stream.print("std::cout << std::endl")
-      stream.println(";")
+      case mn@Misc2_Println() => 
+        Console.println("CGenMiscOps::emitNode::Misc2_Println")
+        stream.print("std::cout << std::endl")
+        stream.println(";")
 
-    case mn@Misc_UnsafeImmutable(__arg0) => 
-      stream.print(remapWithRef(sym.tp) + " " + quote(sym) + " = ")
-      stream.print(""+quote(__arg0)+"")
-      stream.println(";")
+      case mn@Misc_UnsafeImmutable(__arg0) => 
+        Console.println("CGenMiscOps::emitNode::Misc_UnsafeImmutable")
+        stream.print(remapWithRef(sym.tp) + " " + quote(sym) + " = ")
+        stream.print(""+quote(__arg0)+"")
+        stream.println(";")
 
-    case _ => super.emitNode(sym, rhs)
+      case _ => 
+        Console.println("CGenMiscOps::emitNode - going elsewhere")
+        super.emitNode(sym, rhs)
+    }
   }
 }

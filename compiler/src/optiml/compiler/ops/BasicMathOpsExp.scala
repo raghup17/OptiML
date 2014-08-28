@@ -143,17 +143,23 @@ trait CGenBasicMathOps extends CGenFat {
   val IR: BasicMathOpsExp
   import IR._
 
-  override def emitNode(sym: Sym[Any], rhs: Def[Any]) = rhs match {
-    case mn@BasicMath1_Max(__arg0,__arg1) => 
-      stream.print(remapWithRef(sym.tp) + " " + quote(sym) + " = ")
-      stream.print("("+quote(__arg0)+">"+quote(__arg1)+")?"+quote(__arg0)+":"+quote(__arg1)+"")
-      stream.println(";")
+  override def emitNode(sym: Sym[Any], rhs: Def[Any]) = {
+      rhs match {
+      case mn@BasicMath1_Max(__arg0,__arg1) => 
+        Console.println("CGenBasicMathOps::emitNode::BasicMath1_Max")
+        stream.print(remapWithRef(sym.tp) + " " + quote(sym) + " = ")
+        stream.print("("+quote(__arg0)+">"+quote(__arg1)+")?"+quote(__arg0)+":"+quote(__arg1)+"")
+        stream.println(";")
 
-    case mn@BasicMath1_Min(__arg0,__arg1) => 
-      stream.print(remapWithRef(sym.tp) + " " + quote(sym) + " = ")
-      stream.print("("+quote(__arg0)+"<"+quote(__arg1)+")?"+quote(__arg0)+":"+quote(__arg1)+"")
-      stream.println(";")
+      case mn@BasicMath1_Min(__arg0,__arg1) => 
+        Console.println("CGenBasicMathOps::emitNode::BasicMath1_Min")
+        stream.print(remapWithRef(sym.tp) + " " + quote(sym) + " = ")
+        stream.print("("+quote(__arg0)+"<"+quote(__arg1)+")?"+quote(__arg0)+":"+quote(__arg1)+"")
+        stream.println(";")
 
-    case _ => super.emitNode(sym, rhs)
+      case _ => 
+        Console.println("CGenBasicMathOps::emitNode - going elsewhere")
+        super.emitNode(sym, rhs)
+    }
   }
 }

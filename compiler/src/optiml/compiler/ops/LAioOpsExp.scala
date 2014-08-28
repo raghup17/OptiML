@@ -147,12 +147,17 @@ trait CGenLAioOps extends CGenFat {
   val IR: LAioOpsExp
   import IR._
 
-  override def emitNode(sym: Sym[Any], rhs: Def[Any]) = rhs match {
-    case mn@ReadFirstLine(path) => 
-      stream.print(remapWithRef(sym.tp) + " " + quote(sym) + " = ")
-      stream.print("readFirstLineFile("+quote(path)+")")
-      stream.println(";")
+  override def emitNode(sym: Sym[Any], rhs: Def[Any]) = { 
+      rhs match {
+      case mn@ReadFirstLine(path) => 
+        Console.println("CGenLAioOps::emitNode::ReadFirstLine")
+        stream.print(remapWithRef(sym.tp) + " " + quote(sym) + " = ")
+        stream.print("readFirstLineFile("+quote(path)+")")
+        stream.println(";")
 
-    case _ => super.emitNode(sym, rhs)
+      case _ => 
+        Console.println("CGenLAioOps::emitNode - going elsewhere")
+        super.emitNode(sym, rhs)
+    }
   }
 }

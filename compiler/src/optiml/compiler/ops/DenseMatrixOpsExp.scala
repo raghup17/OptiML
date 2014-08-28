@@ -14,7 +14,10 @@ import optiml.shared.ops._
 import optiml.shared.typeclass._
 import optiml.compiler._
 import optiml.compiler.ops._
+import ppl.delite.framework.Config
 
+import ppl.delite.framework.codegen.delite.DeliteCodegen
+import java.io.PrintWriter
 /**
  * IR Definitions
  */
@@ -211,6 +214,8 @@ trait DenseMatrixOpsExp extends DenseMatrixCompilerOps with DeliteCollectionOpsE
 
   case class Densematrix_matmult[T:Manifest](self: Rep[DenseMatrix[T]],__arg1: Rep[DenseMatrix[T]])(implicit val __pos: SourceContext,val __imp0: Arith[T]) extends DeliteOpSingleTask[DenseMatrix[T]](reifyEffectsHere(densematrix_matmult_impl62[T](self,__arg1)(implicitly[Manifest[T]],__pos,__imp0))) {
     val _mT = implicitly[Manifest[T]]
+
+    override def autotune = Config.autotuneEnabled
   }
 
   case class Densematrix_matvecmult[T:Manifest](self: Rep[DenseMatrix[T]],__arg1: Rep[DenseVector[T]])(implicit val __pos: SourceContext,val __imp0: Arith[T]) extends DeliteOpSingleTask[DenseVector[T]](reifyEffectsHere(densematrix_matvecmult_impl63[T](self,__arg1)(implicitly[Manifest[T]],__pos,__imp0))) {
@@ -741,7 +746,31 @@ trait DenseMatrixOpsExp extends DenseMatrixCompilerOps with DeliteCollectionOpsE
     densematrix_muleq_impl2[T](self,__arg1)(implicitly[Manifest[T]],__pos,__imp0)
   }
   def densematrix_matmult[T:Manifest](self: Rep[DenseMatrix[T]],__arg1: Rep[DenseMatrix[T]])(implicit __pos: SourceContext,__imp0: Arith[T]) = {
-    reflectPure(Densematrix_matmult[T](self,__arg1)(implicitly[Manifest[T]],__pos,__imp0))
+    if (Config.autotuneEnabled) {
+      Console.println("[AUTOTUNER] Enabled, doing my thing in densematrix_matmult")
+      val m1 = fresh[DenseMatrix[T]]
+      val m2 = fresh[DenseMatrix[T]]
+      val lhs = reflectPure(Densematrix_matmult[T](m1, m2)(implicitly[Manifest[T]],__pos,__imp0))
+      val stm = findDefinition(lhs.asInstanceOf[Sym[Any]]).get
+      val irnode = stm match {
+        case TP(lhs: Sym[Any], rhs: Def[Any]) => rhs
+      }
+
+      Console.println("Sym: ")
+      Console.println(lhs)
+      Console.println("Matmult IR node: ")
+      Console.println(irnode)
+      val codegen = new OptiMLCodegenC{val IR: DenseMatrixOpsExp.this.type = DenseMatrixOpsExp.this} // ; stream = new PrintWriter(System.out)}
+      val stream = new PrintWriter(System.out)
+      codegen.withStream(stream) {
+        codegen.emitNode(lhs.asInstanceOf[Sym[Any]], irnode)
+      }
+      throw new Exception("stop here")
+      lhs
+    }
+    else {
+      reflectPure(Densematrix_matmult[T](self,__arg1)(implicitly[Manifest[T]],__pos,__imp0))
+    }
   }
   def densematrix_matvecmult[T:Manifest](self: Rep[DenseMatrix[T]],__arg1: Rep[DenseVector[T]])(implicit __pos: SourceContext,__imp0: Arith[T]) = {
     reflectPure(Densematrix_matvecmult[T](self,__arg1)(implicitly[Manifest[T]],__pos,__imp0))

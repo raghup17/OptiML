@@ -780,7 +780,7 @@ trait DenseMatrixOpsImpl {
 
 
   def densematrix_matmult_impl62[T:Manifest](self: Rep[DenseMatrix[T]],__arg1: Rep[DenseMatrix[T]])(implicit __pos: SourceContext,__imp0: Arith[T]): Rep[DenseMatrix[T]] = {
-    fassert(self.numCols == __arg1.numRows, "dimension mismatch: matrix multiply")
+//    fassert(self.numCols == __arg1.numRows, "dimension mismatch: matrix multiply")
 
     val out = DenseMatrix[T](self.numRows, __arg1.numCols)
     if (Config.autotuneEnabled) {
@@ -797,48 +797,32 @@ trait DenseMatrixOpsImpl {
       *  func = getFunc(params)
       *  func
       */
-
-//      val unrollCount = 2  // Assumption is that the loop has greater iterations than unroll count
-
 //      val yT = __arg1.t
-//      unroll(2) (0, self.numRows, 1) { rowIdx => {
-//
-//        unroll(2) (0, __arg1.numCols, 1) { i => {
-//
-//          var acc = self(rowIdx, 0) * yT(i, 0)
-//          unroll(2) (1, yT.numCols, 1) { j => {
-//            acc += self(rowIdx, j) * yT(i, j)
-//          }} // j
-//
-//
-//          out(rowIdx, i) = acc
-//        }} // i
-//      }} // rowIdx
-   
-      val M = self.numRows
-      val P = self.numCols
-      val N = __arg1.numCols
-      val m = 4
-      val p = 4
-      val n = 4
 
-
-      unroll(2) (0, M, m) { blockm => {
-        unroll(2) (0, N, n) { blockn => { 
-          unroll(2) (0, P, p) { blockp => {
-          
-            unroll(2) (blockm, blockm+m, 1) { rowIdx => {
-              unroll(2) (blockn ,blockn+n, 1) { colIdx => {
-                var acc = out(rowIdx, colIdx)
-                unroll(2) (blockp, blockp + p, 1) { tempIter => {
-                  acc += self(rowIdx, tempIter) * __arg1(tempIter, colIdx)
-                }}
-                out(rowIdx, colIdx) = acc
-              }}
-            }}
-          }}
-        }}
-      }}
+//      val M = self.numRows
+//      val P = self.numCols
+//      val N = __arg1.numCols
+//      val m = 4
+//      val p = 4
+//      val n = 4
+//
+      println("M P N m p n")
+//      unroll(2) (0, M, m) { blockm => {
+//        unroll(2) (0, N, n) { blockn => { 
+//          unroll(2) (0, P, p) { blockp => {
+//          
+//            unroll(2) (blockm, blockm+m, 1) { rowIdx => {
+//              unroll(2) (blockn ,blockn+n, 1) { colIdx => {
+//                var acc = out(rowIdx, colIdx)
+//                unroll(2) (blockp, blockp + p, 1) { tempIter => {
+//                  acc += self(rowIdx, tempIter) * __arg1(tempIter, colIdx)
+//                }}
+//                out(rowIdx, colIdx) = acc
+//              }}
+//            }}
+//          }}
+//        }}
+//      }}
 
     }
     else {

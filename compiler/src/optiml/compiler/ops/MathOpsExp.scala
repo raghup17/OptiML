@@ -488,122 +488,151 @@ trait CGenMathOps extends CGenFat {
   val IR: MathOpsExp
   import IR._
 
-  override def emitNode(sym: Sym[Any], rhs: Def[Any]) = rhs match {
-    case mn@Math_INF() => 
-      stream.print(remapWithRef(sym.tp) + " " + quote(sym) + " = ")
-      stream.print("std::numeric_limits<double>::max()")
-      stream.println(";")
+  override def emitNode(sym: Sym[Any], rhs: Def[Any]) = {
+      rhs match {
+      case mn@Math_INF() => 
+        Console.println("CGenMathOps::emitNode::Math_INF")
+        stream.print(remapWithRef(sym.tp) + " " + quote(sym) + " = ")
+        stream.print("std::numeric_limits<double>::max()")
+        stream.println(";")
 
-    case mn@Math_NINF() => 
-      stream.print(remapWithRef(sym.tp) + " " + quote(sym) + " = ")
-      stream.print("std::numeric_limits<double>::min()")
-      stream.println(";")
+      case mn@Math_NINF() => 
+        Console.println("CGenMathOps::emitNode::Math_NINF")
+        stream.print(remapWithRef(sym.tp) + " " + quote(sym) + " = ")
+        stream.print("std::numeric_limits<double>::min()")
+        stream.println(";")
 
-    case mn@MathObject_Abs(__arg0) => 
-      stream.print(remapWithRef(sym.tp) + " " + quote(sym) + " = ")
-      stream.print("fabs("+quote(__arg0)+")")
-      stream.println(";")
+      case mn@MathObject_Abs(__arg0) => 
+        Console.println("CGenMathOps::emitNode::MathObject_Abs")
+        stream.print(remapWithRef(sym.tp) + " " + quote(sym) + " = ")
+        stream.print("fabs("+quote(__arg0)+")")
+        stream.println(";")
 
-    case mn@MathObject_Exp(__arg0) => 
-      stream.print(remapWithRef(sym.tp) + " " + quote(sym) + " = ")
-      stream.print("exp("+quote(__arg0)+")")
-      stream.println(";")
+      case mn@MathObject_Exp(__arg0) => 
+        Console.println("CGenMathOps::emitNode::MathObject_Exp")
+        stream.print(remapWithRef(sym.tp) + " " + quote(sym) + " = ")
+        stream.print("exp("+quote(__arg0)+")")
+        stream.println(";")
 
-    case mn@MathObject_Log(__arg0) => 
-      stream.print(remapWithRef(sym.tp) + " " + quote(sym) + " = ")
-      stream.print("log("+quote(__arg0)+")")
-      stream.println(";")
+      case mn@MathObject_Log(__arg0) => 
+        Console.println("CGenMathOps::emitNode::MathObject_Log")
+        stream.print(remapWithRef(sym.tp) + " " + quote(sym) + " = ")
+        stream.print("log("+quote(__arg0)+")")
+        stream.println(";")
 
-    case mn@MathObject_Log10(__arg0) => 
-      stream.print(remapWithRef(sym.tp) + " " + quote(sym) + " = ")
-      stream.print("log10("+quote(__arg0)+")")
-      stream.println(";")
+      case mn@MathObject_Log10(__arg0) => 
+        Console.println("CGenMathOps::emitNode::MathObject_Log10")
+        stream.print(remapWithRef(sym.tp) + " " + quote(sym) + " = ")
+        stream.print("log10("+quote(__arg0)+")")
+        stream.println(";")
 
-    case mn@MathObject_Sqrt(__arg0) => 
-      stream.print(remapWithRef(sym.tp) + " " + quote(sym) + " = ")
-      stream.print("sqrt("+quote(__arg0)+")")
-      stream.println(";")
+      case mn@MathObject_Sqrt(__arg0) => 
+        Console.println("CGenMathOps::emitNode::MathObject_Sqrt")
+        stream.print(remapWithRef(sym.tp) + " " + quote(sym) + " = ")
+        stream.print(remapWithRef(sym.tp) + " " + quote(sym) + " = ")
+        stream.print("sqrt("+quote(__arg0)+")")
+        stream.println(";")
 
-    case mn@MathObject_Ceil(__arg0) => 
-      stream.print(remapWithRef(sym.tp) + " " + quote(sym) + " = ")
-      stream.print("ceil("+quote(__arg0)+")")
-      stream.println(";")
+      case mn@MathObject_Ceil(__arg0) => 
+        Console.println("CGenMathOps::emitNode::MathObject_Ceil")
+        stream.print(remapWithRef(sym.tp) + " " + quote(sym) + " = ")
+        stream.print("ceil("+quote(__arg0)+")")
+        stream.println(";")
 
-    case mn@MathObject_Floor(__arg0) => 
-      stream.print(remapWithRef(sym.tp) + " " + quote(sym) + " = ")
-      stream.print("floor("+quote(__arg0)+")")
-      stream.println(";")
+      case mn@MathObject_Floor(__arg0) => 
+        Console.println("CGenMathOps::emitNode::MathObject_Floor")
+        stream.print(remapWithRef(sym.tp) + " " + quote(sym) + " = ")
+        stream.print("floor("+quote(__arg0)+")")
+        stream.println(";")
 
-    case mn@MathObject_Round(__arg0) => 
-      stream.print(remapWithRef(sym.tp) + " " + quote(sym) + " = ")
-      stream.print("(long) round("+quote(__arg0)+")")
-      stream.println(";")
+      case mn@MathObject_Round(__arg0) => 
+        Console.println("CGenMathOps::emitNode::MathObject_Round")
+        stream.print(remapWithRef(sym.tp) + " " + quote(sym) + " = ")
+        stream.print("(long) round("+quote(__arg0)+")")
+        stream.println(";")
 
-    case mn@MathObject_Sin(__arg0) => 
-      stream.print(remapWithRef(sym.tp) + " " + quote(sym) + " = ")
-      stream.print("sin("+quote(__arg0)+")")
-      stream.println(";")
+      case mn@MathObject_Sin(__arg0) => 
+        Console.println("CGenMathOps::emitNode::MathObject_Sin")
+        stream.print(remapWithRef(sym.tp) + " " + quote(sym) + " = ")
+        stream.print("sin("+quote(__arg0)+")")
+        stream.println(";")
 
-    case mn@MathObject_Sinh(__arg0) => 
-      stream.print(remapWithRef(sym.tp) + " " + quote(sym) + " = ")
-      stream.print("sinh("+quote(__arg0)+")")
-      stream.println(";")
+      case mn@MathObject_Sinh(__arg0) => 
+        Console.println("CGenMathOps::emitNode::MathObject_Sinh")
+        stream.print(remapWithRef(sym.tp) + " " + quote(sym) + " = ")
+        stream.print(remapWithRef(sym.tp) + " " + quote(sym) + " = ")
+        stream.print("sinh("+quote(__arg0)+")")
+        stream.println(";")
 
-    case mn@MathObject_Asin(__arg0) => 
-      stream.print(remapWithRef(sym.tp) + " " + quote(sym) + " = ")
-      stream.print("asin("+quote(__arg0)+")")
-      stream.println(";")
+      case mn@MathObject_Asin(__arg0) => 
+        Console.println("CGenMathOps::emitNode::MathObject_Asin")
+        stream.print(remapWithRef(sym.tp) + " " + quote(sym) + " = ")
+        stream.print("asin("+quote(__arg0)+")")
+        stream.println(";")
 
-    case mn@MathObject_Cos(__arg0) => 
-      stream.print(remapWithRef(sym.tp) + " " + quote(sym) + " = ")
-      stream.print("cos("+quote(__arg0)+")")
-      stream.println(";")
+      case mn@MathObject_Cos(__arg0) => 
+        Console.println("CGenMathOps::emitNode::MathObject_Cos")
+        stream.print(remapWithRef(sym.tp) + " " + quote(sym) + " = ")
+        stream.print("cos("+quote(__arg0)+")")
+        stream.println(";")
 
-    case mn@MathObject_Cosh(__arg0) => 
-      stream.print(remapWithRef(sym.tp) + " " + quote(sym) + " = ")
-      stream.print("cosh("+quote(__arg0)+")")
-      stream.println(";")
+      case mn@MathObject_Cosh(__arg0) => 
+        Console.println("CGenMathOps::emitNode::MathObject_Cosh")
+        stream.print(remapWithRef(sym.tp) + " " + quote(sym) + " = ")
+        stream.print("cosh("+quote(__arg0)+")")
+        stream.println(";")
 
-    case mn@MathObject_Acos(__arg0) => 
-      stream.print(remapWithRef(sym.tp) + " " + quote(sym) + " = ")
-      stream.print("acos("+quote(__arg0)+")")
-      stream.println(";")
+      case mn@MathObject_Acos(__arg0) => 
+        Console.println("CGenMathOps::emitNode::MathObject_Acos")
+        stream.print(remapWithRef(sym.tp) + " " + quote(sym) + " = ")
+        stream.print("acos("+quote(__arg0)+")")
+        stream.println(";")
 
-    case mn@MathObject_Tan(__arg0) => 
-      stream.print(remapWithRef(sym.tp) + " " + quote(sym) + " = ")
-      stream.print("tan("+quote(__arg0)+")")
-      stream.println(";")
+      case mn@MathObject_Tan(__arg0) => 
+        Console.println("CGenMathOps::emitNode::MathObject_Tan")
+        stream.print(remapWithRef(sym.tp) + " " + quote(sym) + " = ")
+        stream.print("tan("+quote(__arg0)+")")
+        stream.println(";")
 
-    case mn@MathObject_Tanh(__arg0) => 
-      stream.print(remapWithRef(sym.tp) + " " + quote(sym) + " = ")
-      stream.print("tan("+quote(__arg0)+")")
-      stream.println(";")
+      case mn@MathObject_Tanh(__arg0) => 
+        Console.println("CGenMathOps::emitNode::MathObject_Tanh")
+        stream.print(remapWithRef(sym.tp) + " " + quote(sym) + " = ")
+        stream.print("tan("+quote(__arg0)+")")
+        stream.println(";")
 
-    case mn@MathObject_Atan(__arg0) => 
-      stream.print(remapWithRef(sym.tp) + " " + quote(sym) + " = ")
-      stream.print("atan("+quote(__arg0)+")")
-      stream.println(";")
+      case mn@MathObject_Atan(__arg0) => 
+        Console.println("CGenMathOps::emitNode::MathObject_Atan")
+        stream.print(remapWithRef(sym.tp) + " " + quote(sym) + " = ")
+        stream.print("atan("+quote(__arg0)+")")
+        stream.println(";")
 
-    case mn@MathObject_Atan2(__arg0,__arg1) => 
-      stream.print(remapWithRef(sym.tp) + " " + quote(sym) + " = ")
-      stream.print("atan2("+quote(__arg0)+", "+quote(__arg1)+")")
-      stream.println(";")
+      case mn@MathObject_Atan2(__arg0,__arg1) => 
+        Console.println("CGenMathOps::emitNode::MathObject_Atan2")
+        stream.print(remapWithRef(sym.tp) + " " + quote(sym) + " = ")
+        stream.print("atan2("+quote(__arg0)+", "+quote(__arg1)+")")
+        stream.println(";")
 
-    case mn@MathObject_Pow(__arg0,__arg1) => 
-      stream.print(remapWithRef(sym.tp) + " " + quote(sym) + " = ")
-      stream.print("pow("+quote(__arg0)+", "+quote(__arg1)+")")
-      stream.println(";")
+      case mn@MathObject_Pow(__arg0,__arg1) => 
+        Console.println("CGenMathOps::emitNode::MathObject_Pow")
+        stream.print(remapWithRef(sym.tp) + " " + quote(sym) + " = ")
+        stream.print("pow("+quote(__arg0)+", "+quote(__arg1)+")")
+        stream.println(";")
 
-    case mn@MathObject_Max(__arg0,__arg1) => 
-      stream.print(remapWithRef(sym.tp) + " " + quote(sym) + " = ")
-      stream.print("fmax("+quote(__arg0)+", "+quote(__arg1)+")")
-      stream.println(";")
+      case mn@MathObject_Max(__arg0,__arg1) => 
+        Console.println("CGenMathOps::emitNode::MathObject_Max")
+        stream.print(remapWithRef(sym.tp) + " " + quote(sym) + " = ")
+        stream.print("fmax("+quote(__arg0)+", "+quote(__arg1)+")")
+        stream.println(";")
 
-    case mn@MathObject_Min(__arg0,__arg1) => 
-      stream.print(remapWithRef(sym.tp) + " " + quote(sym) + " = ")
-      stream.print("fmin("+quote(__arg0)+", "+quote(__arg1)+")")
-      stream.println(";")
+      case mn@MathObject_Min(__arg0,__arg1) => 
+        Console.println("CGenMathOps::emitNode::MathObject_Min")
+        stream.print(remapWithRef(sym.tp) + " " + quote(sym) + " = ")
+        stream.print("fmin("+quote(__arg0)+", "+quote(__arg1)+")")
+        stream.println(";")
 
-    case _ => super.emitNode(sym, rhs)
+      case _ => 
+        Console.println("CGenMathOps::emitNode - going elsewhere")
+        super.emitNode(sym, rhs)
+    }
   }
 }
